@@ -1,0 +1,209 @@
+body{
+body:100%;
+background-color: #e0ebeb;
+}
+
+/*User View*/
+
+#h1UserView{
+background-color: #0066ff;
+color: white;
+padding: 30px;
+ text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+
+}
+
+/*User View*/
+/*---------------------------------------------------------------------------------------------------------*/
+/*User Update*/
+
+
+
+/*User Update*/
+/*----------------------------------------------------------------------------------------------------------*/
+/*Sign In*/
+
+#inpSignin{
+/*margin-right: 1100px;*/
+}
+#formSignin{
+margin-left: 10px;
+}
+
+
+/*Sign In*/
+/*----------------------------------------------------------------------------------------------------------*/
+/*Saved People*/
+
+#customersSavedPeople {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse ;
+    width: 100%;
+}
+
+#customersSavedPeople td, #customersSavedPeople th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#customersSavedPeople tr:nth-child(even){background-color: #f2f2f2;}
+
+#customersSavedPeople tr:hover {background-color: #ddd;}
+
+#customersSavedPeople th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color:#0066ff;
+    color: white;
+    }
+
+#removeupSavedPeople{
+ font-size: 35px;
+}
+
+/*Saved People*/
+/*----------------------------------------------------------------------------------------------------------*/
+/*People Update*/
+
+#inpPeopleUpdate{
+/*margin-right: 1100px;*/
+}
+#formPeopleUpdate{
+margin-left: 10px;
+}
+
+/*People Update*/
+/*----------------------------------------------------------------------------------------------------------*/
+/*Login*/
+
+.errorblockLogin{
+color: #ff0000;
+background-color: #ffeeee;
+border: 3px solid #ff0000;
+padding: 8px;
+margin: 16px;
+text-align: center;
+}
+#h1Login{
+background-color: #0066ff;
+color: white;
+padding: 30px;
+}
+#buttonLogin{
+text-align: center;
+padding: 10px;
+padding-right: 80px;
+}
+#formLogin{
+
+}
+#formLogin button{
+	padding-right: 75px;
+	padding-left: 75px;
+	padding-bottom: 10px;
+	padding-top: 10px;
+	text-align: center;
+
+}
+
+/*Login*/
+/*---------------------------------------------------------------------------------------------------------*/
+/*Home*/
+
+#timeHome{
+	text-align: right;
+}
+
+#h1Home{
+background-color: #0066ff;
+color: white;
+ text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+padding: 30px;
+}
+
+#h2tHome{
+   text-align: center;
+  
+}
+#helpTextHome{
+text-align: center;
+}
+#sectionHome{
+text-align: center;
+}
+#helpHome{
+ background-color: #0066ff;
+ color:white;
+  text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+}
+
+
+
+/*Home*/
+/*-----------------------------------------------------------------------------------------------------------*/
+/*AdminView*/
+
+#removeupAdminView{
+ font-size: 35px;
+}
+
+#h1AdminView{
+background-color: #0066ff;
+color: white;
+padding: 30px;
+ text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+}
+
+#customersAdminView {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse ;
+    width: 100%;
+}
+
+#customersAdminView td, #customersAdminView th {
+    border: 1px solid #ddd;
+    padding: 5px;
+   text-align: center;
+}
+
+#customersAdminView tr:nth-child(even){background-color: #f2f2f2;}
+
+#customersAdminView tr:hover {background-color: #ddd;}
+
+#customersAdminView th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color:#0066ff;
+    color: white;
+    }
+
+/*AdminView*/
+/*-----------------------------------------------------------------------------------------------------------*/
+/*AddPeople  addPeople addPeople*/
+
+#formAddPeople{
+margin-left: 10px;
+}
+#inpAddPeople{
+/*margin-right: 1100px;*/
+}
+
+
+/*AddPeople addPeople addPeople*/
+/*-----------------------------------------------------------------------------------------------------------*/
+/*403 403 403 403 403*/
+
+#h1403{
+background-color: #0066ff;
+color: white;
+padding: 30px;
+ text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+}
+#h2403{
+text-align: center;
+}
+
+/*403 403 403 403*/
+

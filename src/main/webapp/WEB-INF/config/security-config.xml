@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+<!-- 
+permitAll
+denyAll
+isAuthenticated()
+hasRole('')
+hasAnyRole('')
+"ROLE_USER"
+ -->
+ 
+	<http auto-config="true" use-expressions="true">
+	
+		<intercept-url pattern="/index.jsp" access="permitAll" />
+		<intercept-url pattern="/prueba.html" access="permitAll"/>
+		<intercept-url pattern="/hello.html" access="permitAll"/>
+		<intercept-url pattern="/signIn.html" access="permitAll"/>
+		
+		<intercept-url pattern="/addPeople.html" access="isAuthenticated()" />
+		<intercept-url pattern="/addPhoneNumber.html" access="isAuthenticated()" />
+		<intercept-url pattern="/addAddress.html" access="isAuthenticated()" />
+		<intercept-url pattern="/addEmail.html"	access="isAuthenticated()" />
+		<intercept-url pattern="/peopleUpdate.html" access="isAuthenticated()"/>
+		<intercept-url pattern="/userView.html" access="isAuthenticated()"/>
+        <intercept-url pattern="userUpdate.html" access="isAuthenticated()"/>
+		
+		<intercept-url pattern="/adminView.html" access="hasRole('ROLE_ADMIN')" />
+		
+		 <intercept-url pattern="/login.html" access="permitAll"/> 
+		 <intercept-url pattern="/loginFailed.html" access="permitAll"/> 
+		 <intercept-url pattern="/403.html" access="permitAll"/> 
+		
+		<form-login login-page="/login.html" authentication-failure-url="/loginFailed.html" always-use-default-target="true" default-target-url="/userView.html"/> 
+		<logout logout-success-url="/logout.html"/> 
+		 <access-denied-handler error-page="/403.html"/> 
+	
+	</http>
+
+
+	<authentication-manager>
+	<authentication-provider>
+	<password-encoder hash="bcrypt"/>
+	<jdbc-user-service data-source-ref="dataSource"/>
+	</authentication-provider>
+	</authentication-manager>
+
+
+	<beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<beans:property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+	<beans:property name="url" value="jdbc:mysql://localhost/memory"/>
+	<beans:property name="username" value="root"/>
+	<beans:property name="password" value=""/>
+	</beans:bean>
+
+
+</beans:beans>
