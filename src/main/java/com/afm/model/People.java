@@ -12,7 +12,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonManagedReference;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.stereotype.Component;
@@ -26,7 +28,7 @@ public class People {
 	
 	@Id
 	@GeneratedValue
-	private Long id;
+	private Long idPeople;
 	@NotEmpty
 	private String name;
 	@NotEmpty
@@ -35,13 +37,18 @@ public class People {
 	private int age;
 	private CommonsMultipartFile img;
 	private String rutaImg;
+	private String gender = "M";
 	@ManyToOne
+	@JsonBackReference
 	private User user;
     
+	@JsonManagedReference
 	@OneToMany(mappedBy="people", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<PhoneNumber> phoneNumbers = new ArrayList<PhoneNumber>();
+	@JsonManagedReference
 	@OneToMany(mappedBy="people", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Address> addresses = new ArrayList<Address>();
+	@JsonManagedReference
 	@OneToMany(mappedBy="people", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Mail> mails = new ArrayList<Mail>();
 	
@@ -74,11 +81,11 @@ public class People {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	public Long getId() {
-		return id;
+	public Long getIdPeople() {
+		return idPeople;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdPeople(Long id_people) {
+		this.idPeople = id_people;
 	}
 	public String getName() {
 		return name;
@@ -109,6 +116,12 @@ public class People {
 	}
 	public void setRutaImg(String rutaImg) {
 		this.rutaImg = rutaImg;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 	
 	

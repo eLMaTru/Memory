@@ -1,12 +1,60 @@
 body{
 body:100%;
-background-color: #e0ebeb;
+height: 100%; margin: 0; padding: 0;
+/*background-color: #e0ebeb;*/
 }
+html{ height: 100%; margin: 0; padding: 0; }
+.mc-blue{
+	background-color: #002db3;
+	color:white;
+}
+.mc-text-blue{
+color:#002db3;	
+}
+#divcomment{
+	
+	width: 375px;
+	
+}
+#pcomment{
+	color:red;
+}
+#map{
+     height: 60%; width: 70%; margin-left: 15px; 
+      background: blue; /* For browsers that do not support gradients */        
+    background: -webkit-linear-gradient(-90deg, blue, black); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(-90deg, blue, black); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(-90deg, blue, black); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(-90deg, blue, black); /* Standard syntax (must be last) */
+	
+/*	width: 60%;*/
+}
+#blockcoment{}
+#divpassword{
+	display: none;
+}
+#foreach{
+	display: none;
+}
+#buttonComment{
+	display: none;
+}
+#grad4 {
+    height: 60px;
+    background: blue; /* For browsers that do not support gradients */        
+    background: -webkit-linear-gradient(-90deg, blue, black); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(-90deg, blue, black); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(-90deg, blue, black); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(-90deg, blue, black); /* Standard syntax (must be last) */
+    color:white;
+}
+
 
 /*User View*/
 
 #h1UserView{
-background-color: #0066ff;
+/*background-color: #0066ff;*/
+background-color: #2196F3;
 color: white;
 padding: 30px;
  text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
@@ -17,20 +65,26 @@ padding: 30px;
 /*---------------------------------------------------------------------------------------------------------*/
 /*User Update*/
 
-
+.formUp{
+	width: 300px;
+}
+.inputUp{
+/*	margin-bottom: 25px;*/
+}
 
 /*User Update*/
 /*----------------------------------------------------------------------------------------------------------*/
 /*Sign In*/
 
-#inpSignin{
-/*margin-right: 1100px;*/
+.formS{
+	width: 300px;
 }
-#formSignin{
-margin-left: 10px;
+.btn-color{
+background-color:  #2196F3;
+color: #ffffff;
 }
 
-
+.lightgray{color:black;}
 /*Sign In*/
 /*----------------------------------------------------------------------------------------------------------*/
 /*Saved People*/
@@ -47,20 +101,21 @@ margin-left: 10px;
 }
 
 #customersSavedPeople tr:nth-child(even){background-color: #f2f2f2;}
-
+/*
 #customersSavedPeople tr:hover {background-color: #ddd;}
-
+*/
 #customersSavedPeople th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: center;
-    background-color:#0066ff;
+    /*background-color:#0066ff;*/
     color: white;
     }
 
 #removeupSavedPeople{
- font-size: 35px;
+ font-size: 30px;
 }
+
 
 /*Saved People*/
 /*----------------------------------------------------------------------------------------------------------*/
@@ -95,9 +150,13 @@ text-align: center;
 padding: 10px;
 padding-right: 80px;
 }
-#formLogin{
 
+.formL{
+width: 300px;
 }
+#form-login{
+}
+
 #formLogin button{
 	padding-right: 75px;
 	padding-left: 75px;
@@ -111,20 +170,113 @@ padding-right: 80px;
 /*---------------------------------------------------------------------------------------------------------*/
 /*Home*/
 
-#timeHome{
-	text-align: right;
+/*
+#h1Home{
+background: transparent;
+	padding-right: 20px;
+padding-left: 20px;
+color: white;
+
+height: 250px;
 }
+.w3-jumbo{
+	padding-top: 20px;
+	padding-left: 15px;
+color: white;
+}
+#ph1{
+	padding-left: 17px;
+color: white;
+}*/
+#h1home{
+ position: fixed;
+  z-index: 10;
+  width: 100%;
+  color: white;
+  padding-left: 15px;
+}
+#ph1home{
+ position: fixed;
+  z-index: 15;
+  width: 100%;
+  color: white;
+  padding-left: 15px;
+  padding-top: 50px;
+}
+#float{
+	
+	 position: fixed;
+  z-index: 10;
+  width: 100%;
+}
+#nav{
+}
+#header{
+}
+#h1img{
+border-radius:25px;
+width: 100%;
+}
+#h1img2{
+border-radius:25px;
+width: 100%;
+}
+#divimg{
+ 	margin-right: 5px;
+margin-left: 5px;
+ border-radius: 25px;	
+
+/*height:100%;
+*/}
 
 #h1Home{
-background-color: #0066ff;
+	
+background: transparent;
+	padding-right: 20px;
+padding-left: 20px;
+position:relative;
 color: white;
- text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
-padding: 30px;
+height: 275px;
 }
-
+.w3-jumbo{
+	padding-left: 5px;
+}
+#ph1{
+	padding-left: 9px;
+}
+#h1img{
+ border-radius: 25px;	
+	
+}
+#welcome{
+   border-radius: 0px 20px 20px 0px ;	
+	}
+#time{
+border-radius: 20px 0px 0px 20px;	
+}
+#paginerdiv{
+	padding-left: 3px;
+	padding-right: 3px;
+}
+#backlink{text-decoration: none;}
+#nextlink{text-decoration: none; }
+.backpeople{
+	 border-radius: 20px 0px 0px 20px
+}
+.nextpeople{
+	 border-radius: 0px 20px 20px 0px ;	
+	 padding-left: 20px;
+	 padding-right: 20px;
+	 
+}
 #h2tHome{
    text-align: center;
-  
+}
+
+.blockm{
+	width: 150px;
+}
+#blockm{
 }
 #helpTextHome{
 text-align: center;
@@ -132,8 +284,9 @@ text-align: center;
 #sectionHome{
 text-align: center;
 }
-#helpHome{
- background-color: #0066ff;
+.helpHome{
+ background-color: #2196F3;
+ /* background-color: #0066ff;*/
  color:white;
   text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
 }
@@ -175,13 +328,18 @@ padding: 30px;
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: center;
-    background-color:#0066ff;
+    background-color:#002db3;
     color: white;
     }
 
 /*AdminView*/
 /*-----------------------------------------------------------------------------------------------------------*/
 /*AddPeople  addPeople addPeople*/
+
+
+#category-phone{
+	color: #ffffff;
+}
 
 #formAddPeople{
 margin-left: 10px;
@@ -190,16 +348,42 @@ margin-left: 10px;
 /*margin-right: 1100px;*/
 }
 
+.form2{
+	display: none;
+}
+.form3{
+	display: none;
+}
+.form4{
+	display: none;
+}
+
+#btn-back-phone{
+	color: white;
+}
 
 /*AddPeople addPeople addPeople*/
 /*-----------------------------------------------------------------------------------------------------------*/
 /*403 403 403 403 403*/
+.gradblue{
+ background: blue; /* For browsers that do not support gradients */        
+    background: -webkit-linear-gradient(-90deg, blue, black); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(-90deg, blue, black); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(-90deg, blue, black); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(-90deg, blue, black); /* Standard syntax (must be last) */
+ color:white;	
+}
 
 #h1403{
-background-color: #0066ff;
 color: white;
-padding: 30px;
- text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+
+padding: 125px;;
+ background: blue; /* For browsers that do not support gradients */        
+    background: -webkit-linear-gradient(-90deg, blue, black); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(-90deg, blue, black); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(-90deg, blue, black); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(-90deg, blue, black); /* Standard syntax (must be last) */
+  height: 400px; 
 }
 #h2403{
 text-align: center;

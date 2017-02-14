@@ -14,7 +14,8 @@
            <param-name>contextConfigLocation</param-name>
            <param-value>
            classpath:/jpaContext.xml,
-           /WEB-INF/config/security-config.xml
+           /WEB-INF/config/security-config.xml,
+           classpath:/mailSender.xml
            </param-value>
 </context-param> 
 
@@ -64,7 +65,23 @@
 		<url-pattern>*.json</url-pattern>
 	</servlet-mapping>
 	 
-	
+	  
+	 <error-page>
+ <error-code>404</error-code>
+ <location>/WEB-INF/jsp/404.jsp</location>
+</error-page>
+	<!--
+	<error-page>
+ <error-code>400</error-code>
+ <location>/400</location>
+</error-page>
+ 
+
+<error-page>
+ <error-code>500</error-code>
+ <location>/500.jsp</location>
+</error-page>
+	 -->
 	
 
   <display-name>Archetype Created Web Application</display-name>

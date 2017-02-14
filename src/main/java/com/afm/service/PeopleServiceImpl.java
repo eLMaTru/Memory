@@ -1,8 +1,5 @@
 package com.afm.service;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,148 +8,178 @@ import java.util.StringTokenizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.afm.model.Address;
 import com.afm.model.Mail;
 import com.afm.model.People;
 import com.afm.model.PeopleReport;
 import com.afm.model.PhoneNumber;
-import com.afm.model.User;
+import com.afm.repository.PeopleJpaRepository;
 import com.afm.repository.PeopleRepository;
 
 @Service("peopleService")
 public class PeopleServiceImpl implements PeopleService {
-	
-	private static final String FILE_lOCATION = "/home/anderson/workspace/Memory/src/main/webapp/img/";
-	private static final String DEFAULT_FILE = "/home/anderson/workspace/Memory/src/main/webapp/img/user.png";
+
+	private static final String DEFAULT_FILE1 = "img/avatar-hombre.png";
+	private static final String DEFAULT_FILE2 = "img/avatar-mujer1.png";
 
 	@Autowired
 	private PeopleRepository peopleRepository;
+	@Autowired
+	private PeopleJpaRepository peopleJpaRepository;
 	@Autowired
 	private People people;
 	@SuppressWarnings("rawtypes")
 	private Iterator it;
 
-	public People holdPeople(People people) {
-		this.people = people;
-		return people;
-	}
-
 	public People getPeople() {
 		return people;
 	}
 
-
 	@Transactional
-	public People savePeople(People people) throws Exception {
-		
-		if(people.getImg().isEmpty() == false){
-			CommonsMultipartFile uploaded = people.getImg();
-			File localFile = new File(FILE_lOCATION + uploaded.getOriginalFilename());
-			FileOutputStream os = null;
-			try {
-
-				os = new FileOutputStream(localFile);
-				os.write(uploaded.getBytes());
-
-			} finally {
-				if (os != null) {
-					try {
-						os.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-			people.setImg(null);
-			people.setRutaImg(FILE_lOCATION + uploaded.getOriginalFilename());
-			peopleRepository.savePeople(people);
-		}else{
-			people.setImg(null);
-			people.setRutaImg(DEFAULT_FILE);
-			peopleRepository.savePeople(people);
-		}
+	public People savePeople(People people) {
+        if(people.getGender().equals("M")){
+		people.setRutaImg(DEFAULT_FILE1);
+        }else{
+        	people.setRutaImg(DEFAULT_FILE2);
+        }
+		peopleJpaRepository.save(people);
 
 		return people;
 	}
-	
-
-	
 
 	@Transactional
-	public void savePhoneNumber(PhoneNumber phone) {
-		
-List<PhoneNumber> phoneList = new ArrayList<PhoneNumber>();
+	public void savePhone(PhoneNumber phone, People people) {
+		List<PhoneNumber> phoneList = new ArrayList<PhoneNumber>();
+		if (phone.getIdp() == null) {
 			StringTokenizer token = new StringTokenizer(phone.getNumber());
-			StringTokenizer token2 = new StringTokenizer(phone.getCategory());
-			
+			StringTokenizer token2 = new StringTokenizer(phone.getCategoryPh());
+
 			while (token.hasMoreTokens()) {
 				PhoneNumber p = new PhoneNumber();
 				p.setNumber(token.nextToken(","));
-				p.setCategory(token2.nextToken(","));
+				p.setCategoryPh(token2.nextToken(","));
 				phoneList.add(p);
 			}
-		 
+		} else {
+			StringTokenizer token = new StringTokenizer(phone.getNumber());
+			StringTokenizer token2 = new StringTokenizer(phone.getCategoryPh());
+			StringTokenizer token3 = new StringTokenizer(phone.getIdp());
+
+			while (token.hasMoreTokens()) {
+				PhoneNumber p = new PhoneNumber();
+				if (token3.hasMoreTokens() == true) {
+					p.setNumber(token.nextToken(","));
+					p.setCategoryPh(token2.nextToken(","));
+					p.setIdPhoneNumber(Long.valueOf(token3.nextToken(",")));
+
+				} else {
+					p.setNumber(token.nextToken(","));
+					p.setCategoryPh(token2.nextToken(","));
+				}
+				phoneList.add(p);
+			}
+		}
+
 		it = phoneList.iterator();
 		while (it.hasNext()) {
 			PhoneNumber phoneNumber = (PhoneNumber) it.next();
-			phoneNumber.setPeople(getLastPeopleSaved());
+			phoneNumber.setPeople(people);
 			peopleRepository.savePhoneNumber(phoneNumber);
 		}
 	}
 
 	@Transactional
-	public void saveAddress(Address address) {
+	public void saveAddress(Address address, People people) {
+		List<Address> addressList = new ArrayList<Address>();
+		if(address.getIda() == null){
+		StringTokenizer token = new StringTokenizer(address.getStreet());
+		StringTokenizer token2 = new StringTokenizer(address.getCity());
+		StringTokenizer token3 = new StringTokenizer(address.getState());
+		StringTokenizer token4 = new StringTokenizer(address.getCategoryA());
 		
-List<Address> addressList = new ArrayList<Address>();
+		while (token.hasMoreTokens()) {
+			Address a = new Address();
+			a.setStreet(token.nextToken(","));
+			a.setCity(token2.nextToken(","));
+			a.setState(token3.nextToken(","));
+			a.setCategoryA(token4.nextToken(","));
+			addressList.add(a);
+		}
+		}
+		else{
 			StringTokenizer token = new StringTokenizer(address.getStreet());
 			StringTokenizer token2 = new StringTokenizer(address.getCity());
 			StringTokenizer token3 = new StringTokenizer(address.getState());
-			StringTokenizer token4 = new StringTokenizer(address.getCategory());
-			
+			StringTokenizer token4 = new StringTokenizer(address.getCategoryA());
+			StringTokenizer token5 = new StringTokenizer(address.getIda());
+
 			while (token.hasMoreTokens()) {
 				Address a = new Address();
-				a.setStreet(token.nextToken(","));
-				a.setCity(token2.nextToken(","));
-				a.setState(token3.nextToken(","));
-				a.setCategory(token4.nextToken(","));
+				if(token5.hasMoreTokens() == true){
+					a.setStreet(token.nextToken(","));
+					a.setCity(token2.nextToken(","));
+					a.setState(token3.nextToken(","));
+					a.setCategoryA(token4.nextToken(","));
+					a.setIdAddress(Long.valueOf(token5.nextToken(",")));
+				}
+				else{
+					a.setStreet(token.nextToken(","));
+					a.setCity(token2.nextToken(","));
+					a.setState(token3.nextToken(","));
+					a.setCategoryA(token4.nextToken(","));
+				}
 				addressList.add(a);
+			}	
 			}
-		 
 		it = addressList.iterator();
 		while (it.hasNext()) {
 			Address addresss = (Address) it.next();
-			addresss.setPeople(getLastPeopleSaved());
+			addresss.setPeople(people);
 			peopleRepository.saveAddress(addresss);
 		}
 	}
 
 	@Transactional
-	public void saveMail(Mail mail) {
-		
+	public void saveMail(Mail mail, People people) {
 		List<Mail> mailList = new ArrayList<Mail>();
-			StringTokenizer token = new StringTokenizer(mail.getEmail());
-			StringTokenizer token2 = new StringTokenizer(mail.getCategory());
+		if(mail.getIdm() == null){
+		StringTokenizer token = new StringTokenizer(mail.getEmail());
+		StringTokenizer token2 = new StringTokenizer(mail.getCategoryM());
 
-			while(token.hasMoreTokens()){
-            	Mail m = new Mail();
-            	m.setEmail(token.nextToken(","));
-            	m.setCategory(token2.nextToken(","));
-            	mailList.add(m);
-            }
-		
+		while (token.hasMoreTokens()) {
+			Mail m = new Mail();
+			m.setEmail(token.nextToken(","));
+			m.setCategoryM(token2.nextToken(","));
+			mailList.add(m);
+		}
+		}
+		else{
+			StringTokenizer token = new StringTokenizer(mail.getEmail());
+			StringTokenizer token2 = new StringTokenizer(mail.getCategoryM());
+			StringTokenizer token3 = new StringTokenizer(mail.getIdm());
+
+			while (token.hasMoreTokens()) {
+				Mail m = new Mail();
+				if(token3.hasMoreTokens() == true){
+				m.setEmail(token.nextToken(","));
+				m.setCategoryM(token2.nextToken(","));
+				m.setIdMail(Long.valueOf(token3.nextToken(",")));
+				}
+				else{
+					m.setEmail(token.nextToken(","));
+					m.setCategoryM(token2.nextToken(","));
+				}
+				mailList.add(m);
+			}	
+		}
+
 		it = mailList.iterator();
 		while (it.hasNext()) {
 			Mail mails = (Mail) it.next();
-			mails.setPeople(getLastPeopleSaved());
+			mails.setPeople(people);
 			peopleRepository.saveMail(mails);
 		}
-	}
-
-	public People getLastPeopleSaved() {
-		people = peopleRepository.findAllPeoples().get((peopleRepository.findAllPeoples().size() - 1));
-		return people;
 	}
 
 	public List<PeopleReport> getPeopleReport() {
@@ -160,95 +187,18 @@ List<Address> addressList = new ArrayList<Address>();
 	}
 
 	@Transactional
-	public void deletePeople(int id) {
-		peopleRepository.deletePeople(id);
-	}
-
-
-
-	public List<User> unTroo() {
-		List<User> users = new ArrayList<User>();
-		Iterator<User> it = peopleRepository.unTroo().iterator();
-		while (it.hasNext()) {
-			User user = it.next();
-			users.add(user);
-		}
-		return users;
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public List<People> getAllPeople(String name) {
-		List peoples = new ArrayList();
-		Iterator it = peopleRepository.getAllPeople(name).iterator();
-
-		while (it.hasNext()) {
-			People people = (People) it.next();
-			people.setRutaImg(people.getRutaImg().substring(47, people.getRutaImg().length()));
-			peoples.add(people);
-		}
-		
-return peoples;
+	public void delete(Long id) {
+		peopleJpaRepository.delete(id);
 	
 	}
 
-public void saveFullPeople(PhoneNumber phone, Address address, Mail mail) {
+	public List<People> findAllPeopleByUserInSession(String username, String paginer) {
 
-		
-		if (phone != null) {
-			
-			List<PhoneNumber> phoneList = new ArrayList<PhoneNumber>();
-			StringTokenizer token = new StringTokenizer(phone.getNumber());
-			StringTokenizer token2 = new StringTokenizer(phone.getCategory());
-			
-			while (token.hasMoreTokens()) {
-				PhoneNumber p = new PhoneNumber();
-				p.setNumber(token.nextToken(","));
-				p.setCategory(token2.nextToken(","));
-				phoneList.add(p);
-			}
-			//savePhoneNumber(phoneList);
-		}
-
-		if (address != null) {
-			
-			List<Address> addressList = new ArrayList<Address>();
-			StringTokenizer token = new StringTokenizer(address.getStreet());
-			StringTokenizer token2 = new StringTokenizer(address.getCity());
-			StringTokenizer token3 = new StringTokenizer(address.getState());
-			StringTokenizer token4 = new StringTokenizer(address.getCategory());
-			
-			while (token.hasMoreTokens()) {
-				Address a = new Address();
-				a.setStreet(token.nextToken(","));
-				a.setCity(token2.nextToken(","));
-				a.setState(token3.nextToken(","));
-				a.setCategory(token4.nextToken(","));
-				addressList.add(a);
-			}
-			//saveAddress(addressList);
-		}
-		if (mail != null) {
-			
-			List<Mail> mailList = new ArrayList<Mail>();
-			StringTokenizer token = new StringTokenizer(mail.getEmail());
-			StringTokenizer token2 = new StringTokenizer(mail.getCategory());
-
-			while(token.hasMoreTokens()){
-            	Mail m = new Mail();
-            	m.setEmail(token.nextToken(","));
-            	m.setCategory(token2.nextToken(","));
-            	mailList.add(m);
-            }
-			//saveMail(mailList);
-
-		}
-		else{
-			System.out.println("todo esta nulo Lol");
-		}
-
+		return peopleRepository.findAllPeopleByUserInSession(username, paginer);
 	}
 
+	public People findOne(Long id) {
+		return peopleJpaRepository.findOne(id);
+	}
 
-	
-
-}//cierre clase
+}// cierre clase

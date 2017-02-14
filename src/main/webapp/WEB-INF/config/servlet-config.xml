@@ -13,8 +13,6 @@
 
 <context:component-scan base-package="com.afm.controller"/>
 
-
-<!-- manejo de los json y mxl -->
 	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
 		<property name="order" value="1" />
 		<property name="contentNegotiationManager">
@@ -57,5 +55,8 @@
 p:prefix="/WEB-INF/jsp/" p:suffix=".jsp" p:order="2"/>
 
  <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"></bean>
+
+ 
+
 
 </beans>

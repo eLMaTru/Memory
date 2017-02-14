@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.stereotype.Component;
@@ -19,16 +20,17 @@ public class Address {
 	
 	@Id
 	@GeneratedValue
-	private Long id;
+	private Long idAddress;
+	private String ida;
 	@NotEmpty
-	private String category;
+	private String categoryA;
 	@NotEmpty
 	private String street;
 	@NotEmpty
 	private String city; 
 	@NotEmpty
 	private String state;
-	
+	@JsonBackReference
 	@ManyToOne
 	private People people;
 	
@@ -40,17 +42,17 @@ public class Address {
 		this.people = people;
 	}
 	
-	public Long getId() {
-		return id;
+	public Long getIdAddress() {
+		return idAddress;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdAddress(Long id_address) {
+		this.idAddress = id_address;
 	}
-	public String getCategory() {
-		return category;
+	public String getCategoryA() {
+		return categoryA;
 	}
-	public void setCategory(String category) {
-		this.category = category;
+	public void setCategoryA(String category) {
+		this.categoryA = category;
 	}
 	public String getStreet() {
 		return street;
@@ -69,6 +71,12 @@ public class Address {
 	}
 	public void setState(String state) {
 		this.state = state;
+	}
+	public String getIda() {
+		return ida;
+	}
+	public void setIda(String idaddress) {
+		this.ida = idaddress;
 	}
 
 	

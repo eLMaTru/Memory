@@ -6,23 +6,26 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
+
 @Entity
 @Table(name  = "authorities")
 public class Authorities {
 	
 	@Id
 	@GeneratedValue
-	private Long id;
+	private Long idAuthorities;
 	private String username;
 	private String authority;
     
 	@ManyToOne
+	@JsonBackReference
     private User user;
 	public Long getId() {
-		return id;
+		return idAuthorities;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public void setId(Long id_authorities) {
+		this.idAuthorities = id_authorities;
 	}
 	public String getUsername() {
 		return username;

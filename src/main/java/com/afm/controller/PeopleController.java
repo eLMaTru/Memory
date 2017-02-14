@@ -4,6 +4,7 @@ package com.afm.controller;
 import java.security.Principal;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -18,13 +19,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.afm.model.Address;
-import com.afm.model.Category;
 import com.afm.model.Mail;
 import com.afm.model.People;
+import com.afm.model.PeopleReport;
 import com.afm.model.PhoneNumber;
 import com.afm.model.User;
 import com.afm.service.PeopleService;
 import com.afm.service.UserService;
+import com.afm.util.JsonConverter;
 
 @Controller
 public class PeopleController {
@@ -35,6 +37,7 @@ public class PeopleController {
 	private UserService userService;
 	@SuppressWarnings("unused")
 	private int var;
+	private JsonConverter json = new JsonConverter();
 
 	@RequestMapping(value = "addPeople", method = RequestMethod.GET)
 	public String getPeople(@ModelAttribute("people") People people, @ModelAttribute("phone")PhoneNumber number, 
@@ -48,38 +51,21 @@ public class PeopleController {
 	@RequestMapping(value = "addPeople", method = RequestMethod.POST)
 	public String savePeople(@Valid@ModelAttribute("people")People people, BindingResult result, 
 			@ModelAttribute("phone")PhoneNumber phone, @ModelAttribute("address")Address address, 
-			@ModelAttribute("mail")Mail mail, User user, Model model,  HttpSession session, Principal pri) {
-System.out.println(phone.getNumber() + phone.getCategory() );
+			@ModelAttribute("mail")Mail mail, User user, Model model,  HttpSession session, Principal pri,
+			JsonConverter json) {
+
 		if (!result.hasErrors()) {
 			
-			if(people.getImg().isEmpty() == false){
-			people.setId(null);
-			user = userService.getOneUser(pri.getName());
+			people.setIdPeople(null);
+			user = (User) session.getAttribute("userr");
+			if (user == null) {
+				user = userService.findOneByUsername(pri.getName());
+			}
 			people.setUser(user);
-			try {
 				peopleService.savePeople(people);
-				peopleService.savePhoneNumber(phone);
-				peopleService.saveAddress(address);
-				peopleService.saveMail(mail);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}	
-			}
-			else{
-				user = userService.getOneUser(pri.getName());
-				people.setUser(user);
-				people.setId(null);
-				try {
-					peopleService.savePeople(people);
-					peopleService.savePhoneNumber(phone);
-					peopleService.saveAddress(address);
-					peopleService.saveMail(mail);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+				peopleService.savePhone(phone, people);
+				peopleService.saveAddress(address, people);
+				peopleService.saveMail(mail, people);
 			            	
 			return "redirect:userView.html";
 
@@ -90,54 +76,70 @@ System.out.println(phone.getNumber() + phone.getCategory() );
 	
 
 	
-	@RequestMapping(value="peopleDelete", params={"id"}, method = RequestMethod.GET)
-	public String deletePeople(@RequestParam(value="id")int id){
-	       	peopleService.deletePeople(id);
+	@RequestMapping(value="peopleDelete", method = RequestMethod.POST)
+	public String deletePeople(HttpServletRequest res){
+		Long id = Long.parseLong(res.getParameter("id"));
+	       	peopleService.delete(id);
 		return "redirect:userView.html";
 	}
 
 	@RequestMapping(value="/peopleUpdate", params={"id"}, method = RequestMethod.GET)
-	public String getUpdatePeople(@ModelAttribute("people")People people,@RequestParam(value="id")int id, Model model){
-		model.addAttribute("id", id);
-		System.out.println(id + " get people update");
+	public String getUpdatePeople(@ModelAttribute("people")People people,@RequestParam(value="id")Long id, 
+			@ModelAttribute("phone")PhoneNumber phone, @ModelAttribute("address")Address address, 
+			@ModelAttribute("mail")Mail mail, User user, Model model,  HttpSession session, Principal pri){
+	
+		people = peopleService.findOne(id);
+		User us = people.getUser();
+		user = (User) session.getAttribute("userr");
+		if (user == null) {
+			user = userService.findOneByUsername(pri.getName());
+		}
+		if(user.getId() != us.getId()){
+			return "redirect:userView.html";
+		}
+		
+		model.addAttribute("people", people);
+		
+		model.addAttribute("sizePhone", people.getPhoneNumbers().size());
+		model.addAttribute("sizeAddress", people.getAddresses().size());
+		model.addAttribute("sizeMail", people.getMails().size());
+		
+		model.addAttribute("phones", people.getPhoneNumbers());
+		model.addAttribute("addresss", people.getAddresses());
+		model.addAttribute("mails", people.getMails());
+		
+        List<String> jsonPhone = json.convertToArrayJsonString(people.getPhoneNumbers());
+        model.addAttribute("jsonPhone", jsonPhone);
+	
 		return "peopleUpdate";
 	}
 	
-	@RequestMapping(value="/peopleUpdate",  method = RequestMethod.POST)
-	public String updatePeople(@Valid@ModelAttribute("people")People people, BindingResult result,  Model model, HttpSession session,
-			Principal pri, User user, @RequestParam(value="id")Long id){
-	     
+	@RequestMapping(value="/peopleUpdate",params={"idPeople"},  method = RequestMethod.POST)
+	public String updatePeople(@Valid@ModelAttribute("people")People people, BindingResult result, 
+			@ModelAttribute("phone")PhoneNumber phone, @ModelAttribute("address")Address address, 
+			@ModelAttribute("mail")Mail mail, User user, Model model,  HttpSession session, Principal pri, @RequestParam(value="idPeople")Long idPeople){
+
 		if(!result.hasErrors()){
-		if(people.getImg().isEmpty() == false){
-			user = userService.getOneUser(pri.getName());
+			user = (User) session.getAttribute("userr");
+			if (user == null) {
+				user = userService.findOneByUsername(pri.getName());
+			}
 			people.setUser(user);
-			try {
+			
+			
 				peopleService.savePeople(people);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}	
-			}
-			else{
-				user = userService.getOneUser(pri.getName());
-				people.setUser(user);
-				try {
-					peopleService.savePeople(people);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-	    System.out.println("aqui es el bobo: " + user.getId() + people.getId() );
-		return "redirect:savedPeople.html";}
+				peopleService.savePhone(phone, people);
+			peopleService.saveAddress(address, people);
+				peopleService.saveMail(mail, people);
+				return "redirect:userView.html";}
 		else{
 			return "peopleUpdate";
 		}
 	}
 	
 	@RequestMapping(value="/category", method = RequestMethod.GET)
-	public @ResponseBody List<Category> getUsers(){
-		
-		return userService.findAllCategory();
+	public @ResponseBody List<PeopleReport> getUsers(){
+		//return userService.findAllUsers();
+	return peopleService.getPeopleReport();
 	}
 }

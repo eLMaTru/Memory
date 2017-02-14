@@ -35,20 +35,6 @@ public class PeopleReport {
 	
 	public PeopleReport(){}
 	
-
-	
-	/*
-	public PeopleReport(Long id, String peopleName, String lastName, String age, String phoneNumberNumber, String addressState, String mailEmail) {
-		super();
-		this.peopleAge = age;
-		this.peopleLastName = lastName;
-		this.peopleId =id;
-		this.peopleName = peopleName;
-		this.phoneNumberNumber = phoneNumberNumber;
-		this.addressState = addressState;
-		this.mailEmail = mailEmail;
-	}*/
-	
 	public String getPeopleName() {
 		return peopleName;
 	}

@@ -1,11 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!-- libreria para mensajes en los jsp con spring -->
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<!-- librerias para los formularios en los jsp con spring -->
 <%@ taglib prefix="mc" uri="http://www.springframework.org/tags/form"%>
-<!-- security tags -->
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html >
@@ -23,70 +20,106 @@
 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="css/style.css">
 <link rel="stylesheet" href="css/w3.css">
+<script type="text/javascript" src="js/general.js"></script>
 <title>Memory</title>
 </head>
-<body  >
+<body>
 
-
-<ul class="w3-navbar w3-blue w3-border w3-large">
-  <li><a href="home.html"><span class="glyphicon glyphicon-home"></span> <spring:message code="home"/> </a></li>
-  
-  <li class="w3-right">
-  <div class="w3-dropdown-hover">
-  <button class="w3-btn w3-orange" id="p"><span class="glyphicon glyphicon-user"></span> <spring:message code="profile"/> </button>
-  <div class="w3-dropdown-content w3-border">
-<sec:authorize access="isAuthenticated()"> 
- 			<a href="userView.html"><spring:message code="userProfile"/> </a> 
- 		</sec:authorize>
- 		<a href="adminView.html"><spring:message code="adminProfile"/> </a> 
-     <sec:authorize access="isAuthenticated()"> 
- 			<a href="j_spring_security_logout"><span class="glyphicon glyphicon-off"></span> <spring:message code="logout"/> </a> 
+<div id="header">
+<nav class="navbar navbar-inverse" id="nav">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">Memory</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class=""><a href="home.html"><span class="glyphicon glyphicon-home"></span> <spring:message code="home"/> </a></li>
+      
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-globe"></span> <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="?language=en"><spring:message code="english"/> </a></li>
+            <li> <a href="?language=es"><spring:message code="spanish"/> </a></li>
+          </ul>
+        </li>
+         <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> <spring:message code="user"/> <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+          <sec:authorize access="isAuthenticated()"> 
+ <li><a href="adminView.html"><span class="glyphicon glyphicon-user"></span> <spring:message code="adminpro"/></a></li>
+ 	<li>		<a href="userView.html"><span class="glyphicon glyphicon-user"></span> <spring:message code="userProfile"/> </a> </li>
+<li>  			<a href="j_spring_security_logout"><span class="glyphicon glyphicon-log-out"></span> <spring:message code="logout"/> </a> 
+ 		 </li>
  		</sec:authorize> 
- 		  </div>
-</div>  
-  </li>
-</ul>
-<br>
-	
-	<div>
-	   <mc:form modelAttribute="user"  method="post" enctype="multipart/form-data">
-	          <table>
-	            <tr>
-	                 <td><label><spring:message code="img"/> </label><mc:input path="img" type="file"/><br/>
-	                 </td>
-	              <tr>
-	                 <td><label><spring:message code="username"/> </label> <mc:input path="userName"/>
-	                  <mc:errors path="userName"/>
-	                 </td>
-	              </tr>
-	              <tr>
-	                 <td><label><spring:message code="email"/> </label> <mc:input path="email" type="email"/>
-	                  <mc:errors path="email"/>
-	                 </td>
-	              </tr>
-	              <tr>
-	                 <td><label><spring:message code="password"/> </label> <mc:input path="password" type="password"/>
-	                  <mc:errors path="password"/>
-	                 </td>
-	              </tr>
-	              <tr>
-	                 <td><a href="userUpdate.html?id=${id}"><button type="submit" class="btn btn-primary"><spring:message code="update"/> </button></a>
-	                 </td>
-	              </tr>
-	          </table>
-	   </mc:form>
-	</div>
+ 		
+          </ul>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+
+
+</nav>
+
+    </div>  
+
+
+		<mc:form modelAttribute="user" method="post" enctype="multipart/form-data" class="w3-container formUp">
+			
+			
+			<div class="w3-panel gradblue w3-card-8"  style="border-radius:5px;">
+			<h3 class="">
+				<spring:message code="signin.form" />
+			</h3>
+			</div>
+			
+			<label>	<spring:message code="signin.fullName" /></label>
+					<mc:input path="fullName" type="text" class="w3-input w3-hover-blue int-color" placeholder="" />
+					<mc:errors class="error" path="fullName"></mc:errors><br/>
+			
+			<label><spring:message code="username" /> </label>
+			<mc:input path="userName" class="w3-input int-color w3-hover-blue" />
+			<mc:errors path="userName" /><br/>
+			
+			<label><spring:message code="email" /> </label>
+			<mc:input path="email" type="email" class="w3-input int-color w3-hover-blue" />
+			<mc:errors path="email" /><br/>
+			
+			<label><spring:message code="password" /> </label>
+			<mc:input path="password" type="password" value="~0~" class="w3-input int-color w3-hover-blue" />
+			<mc:errors path="password" /><br/>
+
+<mc:form commandName="authorities">
+<mc:select id="category-phone" path="authority" class="btn mc-blue">
+								<mc:option value="ROLE_ADMIN">
+                                   ROLE_ADMIN
+								</mc:option>
+								<mc:option value="ROLE_USER">
+                                   ROLE_USER
+                                 </mc:option>
+							</mc:select>
+<br/><br/><br/>
+<a href="adminView.html"><button class="btn w3-lightgray" id="btn-back-email" type="button"><spring:message code="back"/></button>
+</a>					
+<%-- 			<a href="userUpdate.html?id=${id}"><button type="submit" class="btn btn-color"> <spring:message code="update" /> </button></a> --%>
+	    <button type="submit" class="btn mc-blue"> <spring:message code="update" /></button>
+		
+		</mc:form>
+		</mc:form>
 
 </body>
-  <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script> 
-    <script type="text/javascript">
-
+<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
 	$(document).on('ready', function() {
-	
-	
-	
-	}); //cierre del document on ready
 
-	
-	</script>
+	}); 
+</script>
 </html>

@@ -2,24 +2,36 @@ package com.afm.service;
 
 import java.util.List;
 
-import com.afm.model.Category;
+import com.afm.model.Comment;
 import com.afm.model.User;
 
 public interface UserService {
 	
-	User saveUser(User user)throws Exception;
+	User save(User user);
+
+	List<User> findAll();
+	
+	void delete(int id);
+	
+	User findOneByUsername(String username);
+User findOne(Long id);
+
+	List<User> findAllCategory();
 
 	List<User> findAllUsers();
 	
-	void deleteUser(int id);
+	User userUpdate(User user, String username);
+
+	Comment saveComment(String name, String message);
 	
-	User getOneUser(String username);
+	List<Comment> findAllComment();
 
+	void dComment(Long id);
 
-	List<Category> findAllCategory();
+	int checkUser(User user);
 
+	String checkEmail(String email);
 
-	void saveAuthority();
+	User findOneByEmail(String email);
 	
-
 }

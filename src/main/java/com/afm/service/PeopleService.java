@@ -11,33 +11,24 @@ import com.afm.model.User;
 
 public interface PeopleService {
 	
-	void saveFullPeople(PhoneNumber phone, Address address, Mail mail);
 	
-	List<User> unTroo();
 
-	People savePeople(People people) throws Exception;
-
+	People savePeople(People people) ;
 
     People getPeople();
     
-    People getLastPeopleSaved();
-    
-   
-    
-    
-    
-    
-    
-    void savePhoneNumber(PhoneNumber phoneNumber);
+    void savePhone(PhoneNumber phoneNumber, People people);
 	
-	 void saveAddress(Address address);
+	 void saveAddress(Address address, People people);
 		
-	 void saveMail(Mail mails);
+	 void saveMail(Mail mails, People people);
     	 
 	 List<PeopleReport> getPeopleReport();
 
-	void deletePeople(int id);
+	void delete(Long id);
 
+	List<People> findAllPeopleByUserInSession(String name, String paginer);
+	
+	People findOne(Long id);
 
-	List<People> getAllPeople(String name);
 }

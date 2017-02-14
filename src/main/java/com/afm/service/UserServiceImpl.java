@@ -1,99 +1,112 @@
 package com.afm.service;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import com.afm.model.Authorities;
 import com.afm.model.Category;
+import com.afm.model.Comment;
 import com.afm.model.User;
+import com.afm.repository.UserJpaRepository;
 import com.afm.repository.UserRepository;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
-	private static final String FILE_lOCATION = "/home/anderson/workspace/Memory/src/main/webapp/img/";
-	private static final String DEFAULT_FILE = "/home/anderson/workspace/Memory/src/main/webapp/img/user.png";
+	private static final String DEFAULT_FILE = "img/user.png";
 	@Autowired
 	private UserRepository userRepository;
-   
+   @Autowired
+   private UserJpaRepository userJpaRepository;
   
     
 	@Transactional
-	public User saveUser(User user) throws Exception {
+	public User save(User user){
 		BCryptPasswordEncoder bCry = new BCryptPasswordEncoder();
 		String password = bCry.encode(user.getPassword());
 		user.setPassword(password);
 		user.setEnabled(true);
-
-		if(user.getImg().isEmpty() == false){
-			CommonsMultipartFile uploaded = user.getImg();
-			File localFile = new File(FILE_lOCATION + uploaded.getOriginalFilename());
-			FileOutputStream os = null;
-			try {
-
-				os = new FileOutputStream(localFile);
-				os.write(uploaded.getBytes());
-
-			} finally {
-				if (os != null) {
-					try {
-						os.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-			user.setImg(null);
-			user.setRutaImg(FILE_lOCATION + uploaded.getOriginalFilename());
-			userRepository.saveUser(user);
-		}else{
-			user.setImg(null);
-			user.setRutaImg(DEFAULT_FILE);
-			userRepository.saveUser(user);
-		}
-
+		user.setRutaImg(DEFAULT_FILE);
+		userJpaRepository.save(user);
+		
 		return user;
 	}
+	
+	
 
 	
 
 	@Transactional
-	public void deleteUser(int idUser) {
+	public void delete(int idUser) {
 
-		userRepository.delete(idUser);
+		userJpaRepository.delete((long) idUser);
 	}
 
 
-	public User getOneUser(String username) {
-	User	user = userRepository.getOneUser(username);
+	public User findOneByUsername(String username) {
+		         
+	User	user = userRepository.findOneByUsername(username);
 		return user;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public List<User> findAllUsers() {
-		List users = new ArrayList();
-		Iterator it = userRepository.findAllUser().iterator();
-
-		while (it.hasNext()) {
-			User user = (User) it.next();
-			user.setRutaImg(user.getRutaImg().substring(47, user.getRutaImg().length()));
-			users.add(user);
-		}
-		return users;
+	public List<User> findAll() {
+		return userJpaRepository.findAll();
+	}
+	
+	public List<User> findAllUsers(){
+		
+		return userRepository.findAllUsers();
 	}
 
-	public List<Category> findAllCategory() {
+	
+
+
+	public User findOne(Long id) {
+		return userJpaRepository.findOne(id);
+	}
+
+
+
+
+
+	public User userUpdate(User user, String username) {
+        	User u = new User();
+        	u = userRepository.findOneByUsername(username);
+        	if(user.getPassword().equals("~0~")){
+                    u.setEmail(user.getEmail());
+                    u.setFullName(user.getFullName());
+                    u.setUserName(user.getUserName());
+        	}else{
+        		BCryptPasswordEncoder bCry = new BCryptPasswordEncoder();
+        		String password = bCry.encode(user.getPassword());
+        		u.setPassword(password); 
+        		u.setEmail(user.getEmail());
+                 u.setFullName(user.getFullName());
+                 u.setUserName(user.getUserName());
+                 
+        	}
+    		userJpaRepository.save(u);
+		return u;
+	}
+
+
+
+
+    @Transactional
+	public Comment saveComment(String name, String message) {
+          Comment c = new Comment();
+		  c.setName(name);
+		  c.setMessage(message);
+          userRepository.saveComment(c);
+          return c;
+	}
+
+	public List<User> findAllCategory() {
 		List<Category> categories = new ArrayList<Category>();
 
 		Category home = new Category();
@@ -108,17 +121,73 @@ public class UserServiceImpl implements UserService {
 		other.setCategory("OTHER");
 		categories.add(other);
 
-		return categories;
+		return userJpaRepository.findAll();
 	}
 
-	@Transactional
-	public void saveAuthority() {
-		Authorities aut = new Authorities();
-		User user = userRepository.findAllUser().get((userRepository.findAllUser().size() - 1));
-		aut.setUsername(user.getUserName());
-		aut.setauthority("ROLE_USER");
-		aut.setUser(user);
-		userRepository.saveAuthority(aut);
+
+
+
+
+	public List<Comment> findAllComment() {
+		return userRepository.findAllComment();
 	}
+
+
+
+
+    @Transactional
+	public void dComment(Long id) {
+		userRepository.dComment(id);
+	}
+
+
+
+
+
+	@SuppressWarnings("rawtypes")
+	public int checkUser(User user) {
+		int res =0;	
+		Iterator it=	userJpaRepository.findAll().iterator();
+	    while(it.hasNext()){
+	    	User us = (User) it.next();
+	    	
+	    	if(user.getUserName().equals(us.getUserName()) && user.getEmail().equals(us.getEmail())){
+	    		res = 3;
+	    	}
+	    	else if(user.getUserName().equals(us.getUserName()) && !user.getEmail().equals(us.getEmail())){
+	    		res = 1;
+	    	}
+	    	else if(!user.getUserName().equals(us.getUserName()) && user.getEmail().equals(us.getEmail())){
+	    		res = 2;
+	    	}
+	    	
+	    }
+	return res;
+	}
+
+
+
+
+
+	public String checkEmail(String email) {
+		String result ="false";
+		Iterator it = userJpaRepository.findAll().iterator();
+		while(it.hasNext()){
+			User user = (User) it.next();
+			if(email.equalsIgnoreCase(user.getEmail() )){
+				result = "true";
+			}
+		}
+		return result;
+	}
+
+
+
+
+
+	public User findOneByEmail(String email) {
+		return userRepository.findOneByEmail(email);
+	}
+
 
 }

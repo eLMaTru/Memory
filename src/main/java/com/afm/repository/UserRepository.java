@@ -2,21 +2,21 @@ package com.afm.repository;
 
 import java.util.List;
 
-import com.afm.model.Authorities;
+import com.afm.model.Comment;
 import com.afm.model.User;
 
 public interface UserRepository {
-	
-	User saveUser(User user);
-	
-	List<User> findAllUser();
-	
-	void delete(int  id);
 
+	User findOneByUsername(String username);
 	
+	List<User> findAllUsers();
 
-	User getOneUser(String username);
+	Comment saveComment(Comment c);
+	
+	List<Comment> findAllComment();
 
-	void saveAuthority(Authorities aut);
+	void dComment(Long id);
+
+	User findOneByEmail(String email);
 
 }

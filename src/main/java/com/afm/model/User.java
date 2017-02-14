@@ -12,20 +12,22 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonManagedReference;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 @Component
-@JsonIgnoreProperties
 @Entity
 @Table(name="users")
 public class User {
 	
 	@Id
 	@GeneratedValue 
+	
 	private Long id;
-
+	@NotEmpty
+    private String fullName;
 	private CommonsMultipartFile img;
 	private String rutaImg;
 	@NotEmpty
@@ -36,9 +38,10 @@ public class User {
 	private String password;
 	private boolean enabled;
 	
+	@JsonManagedReference
 	@OneToMany(mappedBy="user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	List<People> people = new ArrayList<People>();
-	
+	@JsonManagedReference
 	@OneToMany(mappedBy="user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	List<Authorities> authorities = new ArrayList<Authorities>();
 	
@@ -55,6 +58,15 @@ public class User {
 	}
 	public void setPeople(List<People> people) {
 		this.people = people;
+	}
+	
+	
+	
+	public String getFullName() {
+		return fullName;
+	}
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 	public Long getId() {
 		return id;

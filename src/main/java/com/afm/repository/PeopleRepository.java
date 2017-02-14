@@ -13,7 +13,6 @@ public interface PeopleRepository {
 	
 	People savePeople(People people);
 
-	List<People> findAllPeoples();
 	
 	Mail saveMail(Mail mail);
 	
@@ -23,11 +22,9 @@ public interface PeopleRepository {
 	
 	List<PeopleReport> getPeopleReport();
 
-	void deletePeople(int id);
 
 	List<People> findAllPeople(Long userId);
 
-	List<User> unTroo();
 
-	List<People> getAllPeople(String name);
+	List<People> findAllPeopleByUserInSession(String username, String paginer);
 }

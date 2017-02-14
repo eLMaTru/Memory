@@ -20,10 +20,10 @@ public class PeopleRepositoryImpl implements PeopleRepository {
 
 	@PersistenceContext
 	private EntityManager em;
-	
+	int num =0;
 	public People savePeople(People people) {
 		
-		if(people.getId() == null){
+		if(people.getIdPeople() == null){
 			em.persist(people);
 			em.flush();
 		}else{
@@ -43,8 +43,10 @@ public class PeopleRepositoryImpl implements PeopleRepository {
 	}
 
 	public Mail saveMail(Mail mail) {
-		if(mail.getId() == null){
+		
+		if(mail.getIdMail() == null){
 			em.persist(mail);
+			em.flush();
 		}else{
 			em.merge(mail);
 			em.close();
@@ -53,8 +55,9 @@ public class PeopleRepositoryImpl implements PeopleRepository {
 	}
 
 	public Address saveAddress(Address address) {
-		if(address.getId() == null){
+		if(address.getIdAddress() == null){
 			em.persist(address);
+			em.flush();
 		}else{
 			em.merge(address);
 			em.close();
@@ -63,8 +66,9 @@ public class PeopleRepositoryImpl implements PeopleRepository {
 	}
 
 	public PhoneNumber savePhoneNumber(PhoneNumber phoneNumber) {
-		if(phoneNumber.getId() == null){
+		if(phoneNumber.getIdPhoneNumber() == null){
 			em.persist(phoneNumber);
+			em.flush();
 		}else{
 			em.merge(phoneNumber);
 			em.close();
@@ -79,38 +83,25 @@ public class PeopleRepositoryImpl implements PeopleRepository {
 		"from People p, PhoneNumber pn, Address a, Mail m where p.id = pn.people.id and p.id = a.people.id and p.id = m.people.id");
 		return query.getResultList();
 	}
-
-	public void deletePeople(int id) {
-
-		Query query = em.createQuery("select p from People p where id="+id);
-		People people = (People) query.getSingleResult();
-		em.remove(people);
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public List<People> findAllPeoples() {
-		Query query = em.createQuery("select p from People p");
-		List people = query.getResultList();
-		return people;
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public List<User> unTroo() {
-		Query query = em.createQuery("select u from User u ");
-		List users = query.getResultList();
-		return users;
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public List<People> getAllPeople(String name) {
 	
-		Query query = em.createQuery("select u from User u where userName= '"+name +"'" );
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public List<People> findAllPeopleByUserInSession(String name, String paginer) {
+		if(paginer.equals("cero") ){num =0;}
+		else if(paginer.equals("next")){num += 5;}
+		else if(paginer.equals("back")){num -=  5;if(num < 0){num =0;}}
+		
+		Query query = em.createQuery("select u from User u  where userName= '"+ name +"' " );
 		User user = (User) query.getSingleResult();
     	query = em.createQuery("select p from People p where user_id="+user.getId());
+    	if(num >= query.getResultList().size()){num = query.getResultList().size() -5;if(num < 0){num = 0;}}
+    	query.setFirstResult(num);
+    	query.setMaxResults(5);
         List people = query.getResultList();
 		
         return people;
 	}
+
+
 	
 	
 
